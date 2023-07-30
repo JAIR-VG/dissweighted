@@ -17,9 +17,10 @@ def get_index_labels(ylab, labelclass):
     get_indexes = lambda ylab, xs: [i for (y, i) in zip(xs, range(len(xs))) if ylab == y]
     return get_indexes(labelclass,ylab)
 
+def get_samples_class(xsamples,idxsamples):
+    return(xsamples[idxsamples,])
 
 def dist2R(x_i, xr, yr, pi_pos, pi_neg):
-   
     m,n = xr.shape
     for i in range(m):
         dxr=np.linalg.norm(xr-x_i,axis=1)
@@ -33,6 +34,12 @@ ftra = '03subcl5-600-5-0-bi-5-1tra.prn'
 ftst = '03subcl5-600-5-0-bi-5-1tst.prn'
 
 X,y = load_dataset(ftra)
-print(get_index_labels(y,0))
+
+idx0=get_index_labels(y,0)
+print(get_samples_class(X,idx0))
+idx1=get_index_labels(y,1)
+
+print(y[idx0])
+print(y[idx1])
 
 print(get_unique_labels(y))
