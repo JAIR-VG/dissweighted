@@ -1,5 +1,9 @@
 import numpy as np
 
+from random import seed
+from random import sample
+
+
 
 
 def load_dataset(nfile):
@@ -30,16 +34,49 @@ def dist2R(x_i, xr, yr, pi_pos, pi_neg):
             dxr = pow(pi_neg,(1/n))*dxr
 
 
+def getR(X,y,porcentaje,semilla):
+    
+    idx0=get_index_labels(y,0)
+    idx1=get_index_labels(y,1)
+
+    nsamp0 = round(len(idx0)*(porcentaje/100))
+    nsamp1= round(len(idx1)*(porcentaje/100))
+    seed(semilla)
+
+    idxselected0 = sample(idx0,nsamp0)
+    idxselected1 = sample(idx1,nsamp1)
+    A =get_samples_class(X,idxselected0)
+    B = get_samples_class(X,idxselected1)
+    R = np.concatenate((A,B),axis=0)
+    yra = y[idxselected0]
+    yrb= y[idxselected1]
+    YR = np.concatenate((yra,yrb),axis=0)
+    return R, YR
+    
+ 
+
+
+
 ftra = '03subcl5-600-5-0-bi-5-1tra.prn'
 ftst = '03subcl5-600-5-0-bi-5-1tst.prn'
 
 X,y = load_dataset(ftra)
 
-idx0=get_index_labels(y,0)
-print(get_samples_class(X,idx0))
-idx1=get_index_labels(y,1)
+R,Ry = getR(X,y,10,4)
+print(X[0])
+print(len(R))
 
-print(y[idx0])
-print(y[idx1])
+dx =np.linalg.norm(X[0]-R,axis=1)
 
-print(get_unique_labels(y))
+print(dx)
+print(len(dx))
+
+
+#idx0=get_index_labels(y,0)
+#print(get_samples_class(X,idx0))
+#idx1=get_index_labels(y,1)
+
+#print(y[idx0])
+#print(y[idx1])
+
+#print(get_unique_labels(y))
