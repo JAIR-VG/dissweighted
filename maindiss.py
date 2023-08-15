@@ -2,7 +2,12 @@ import numpy as np
 
 from random import seed
 from random import sample
+from sklearn.metrics import recall_score, precision_score, f1_score, accuracy_score
+from sklearn import neighbors
 
+import math 
+
+n_neighbors = 1
 
 
 
@@ -52,24 +57,81 @@ def getR(X,y,porcentaje,semilla):
     yrb= y[idxselected1]
     YR = np.concatenate((yra,yrb),axis=0)
     return R, YR
+
+def distmatrices(X,XR):
+    x2 =np.sum(X**2,axis = 1)
+    y2 = np.sum(XR**2,axis=1)
+    xy = np.matmul(X,XR.T)
+    x2 = x2.reshape(-1,1)
+    return np.sqrt(x2-2*xy+y2)
     
+def vector2matrix(Xi,XR):
+    return np.linalg.norm(Xi-XR,axis=1)
  
 
+def distpond(Xi,Yi,XR,YR):
+    n0=get_index_labels(Yi,0)
+    n1=get_index_labels(Yi,1)
+     
+    n0= len(n0)
+    n1=len(n1)
+    n,m =Xi.shape
+    for i in range(n+1):
+        dE = vector2matrix(Xi[i],XR)
+        if (Yi[i]==0):
+            dE = ((n0/(n0+n1))**m)*dE
+        else:
+            dE = ((n1/(n0+n1))**m)*dE
+        print(dE)
 
 
-ftra = '03subcl5-600-5-0-bi-5-1tra.prn'
-ftst = '03subcl5-600-5-0-bi-5-1tst.prn'
 
-X,y = load_dataset(ftra)
+ftra = '03subcl5-600-5-70-bi-5-1tra.prn'
+ftst = '03subcl5-600-5-70-bi-5-1tst.prn'
 
-R,Ry = getR(X,y,10,4)
-print(X[0])
-print(len(R))
+Xtra,ytra = load_dataset(ftra)
+Xtest,ytest = load_dataset(ftst)
 
-dx =np.linalg.norm(X[0]-R,axis=1)
+R,Ry = getR(Xtra,ytra,25,4)
 
-print(dx)
-print(len(dx))
+newtra = distmatrices(Xtra,R)
+newtst = distmatrices(Xtest,R)
+
+
+clf = neighbors.KNeighborsClassifier(n_neighbors, weights='uniform', algorithm="brute")
+
+clf.fit(Xtra,ytra)
+
+ypred = clf.predict(Xtest)
+
+tpr,tnr=recall_score(ytest,ypred,average = None)
+prec = precision_score(ytest,ypred, pos_label=0)
+f1=f1_score(ytest,ypred, pos_label=0)
+gmean = math.sqrt(tpr*tnr)
+acc = accuracy_score(ytest,ypred)
+
+print(tpr,tnr,prec,f1,gmean,acc)
+
+
+newtra = distmatrices(Xtra,R)
+newtst = distmatrices(Xtest,R)
+
+
+clf = neighbors.KNeighborsClassifier(n_neighbors, weights='uniform', algorithm="brute")
+
+clf.fit(newtra,ytra)
+
+ypred = clf.predict(newtst)
+
+tpr,tnr=recall_score(ytest,ypred,average = None)
+prec = precision_score(ytest,ypred, pos_label=0)
+f1=f1_score(ytest,ypred, pos_label=0)
+gmean = math.sqrt(tpr*tnr)
+acc = accuracy_score(ytest,ypred)
+
+print(tpr,tnr,prec,f1,gmean,acc)
+
+distpond(Xtra,ytra,R,YR)
 
 
 #idx0=get_index_labels(y,0)
