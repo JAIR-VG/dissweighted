@@ -76,7 +76,9 @@ def distpond(Xi,Yi,XR,YR):
     n0= len(n0)
     n1=len(n1)
     n,m =Xi.shape
+    n2,m2 = XR.shape
     for i in range(n+1):
+        for i2 in range (n2+1)
         dE = vector2matrix(Xi[i],XR)
         if (Yi[i]==0):
             dE = ((n0/(n0+n1))**m)*dE
@@ -93,45 +95,47 @@ Xtra,ytra = load_dataset(ftra)
 Xtest,ytest = load_dataset(ftst)
 
 R,Ry = getR(Xtra,ytra,25,4)
-
-newtra = distmatrices(Xtra,R)
-newtst = distmatrices(Xtest,R)
-
-
-clf = neighbors.KNeighborsClassifier(n_neighbors, weights='uniform', algorithm="brute")
-
-clf.fit(Xtra,ytra)
-
-ypred = clf.predict(Xtest)
-
-tpr,tnr=recall_score(ytest,ypred,average = None)
-prec = precision_score(ytest,ypred, pos_label=0)
-f1=f1_score(ytest,ypred, pos_label=0)
-gmean = math.sqrt(tpr*tnr)
-acc = accuracy_score(ytest,ypred)
-
-print(tpr,tnr,prec,f1,gmean,acc)
+print(R[0])
+print(Xtra[0])
+print(np.linalg.norm(Xtra[0]-R[0]))
+#newtra = distmatrices(Xtra,R)
+#newtst = distmatrices(Xtest,R)
 
 
-newtra = distmatrices(Xtra,R)
-newtst = distmatrices(Xtest,R)
+#clf = neighbors.KNeighborsClassifier(n_neighbors, weights='uniform', algorithm="brute")
+
+#clf.fit(Xtra,ytra)
+
+#ypred = clf.predict(Xtest)
+
+#tpr,tnr=recall_score(ytest,ypred,average = None)
+#prec = precision_score(ytest,ypred, pos_label=0)
+#f1=f1_score(ytest,ypred, pos_label=0)
+#gmean = math.sqrt(tpr*tnr)
+#acc = accuracy_score(ytest,ypred)
+
+#print(tpr,tnr,prec,f1,gmean,acc)
 
 
-clf = neighbors.KNeighborsClassifier(n_neighbors, weights='uniform', algorithm="brute")
+#newtra = distmatrices(Xtra,R)
+#newtst = distmatrices(Xtest,R)
 
-clf.fit(newtra,ytra)
 
-ypred = clf.predict(newtst)
+#clf = neighbors.KNeighborsClassifier(n_neighbors, weights='uniform', algorithm="brute")
 
-tpr,tnr=recall_score(ytest,ypred,average = None)
-prec = precision_score(ytest,ypred, pos_label=0)
-f1=f1_score(ytest,ypred, pos_label=0)
-gmean = math.sqrt(tpr*tnr)
-acc = accuracy_score(ytest,ypred)
+#clf.fit(newtra,ytra)
 
-print(tpr,tnr,prec,f1,gmean,acc)
+#ypred = clf.predict(newtst)
 
-distpond(Xtra,ytra,R,YR)
+#tpr,tnr=recall_score(ytest,ypred,average = None)
+#prec = precision_score(ytest,ypred, pos_label=0)
+#f1=f1_score(ytest,ypred, pos_label=0)
+#gmean = math.sqrt(tpr*tnr)
+#acc = accuracy_score(ytest,ypred)
+
+#print(tpr,tnr,prec,f1,gmean,acc)
+
+#distpond(Xtra,ytra,R,YR)
 
 
 #idx0=get_index_labels(y,0)
