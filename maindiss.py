@@ -69,24 +69,6 @@ def vector2matrix(Xi,XR):
     return np.linalg.norm(Xi-XR,axis=1)
  
 
-def distpond(Xi,Yi,XR,YR):
-    n0=get_index_labels(Yi,0)
-    n1=get_index_labels(Yi,1)
-     
-    n0= len(n0)
-    n1=len(n1)
-    n,m =Xi.shape
-    n2,m2 = XR.shape
-    for i in range(n+1):
-        for i2 in range (n2+1)
-        dE = vector2matrix(Xi[i],XR)
-        if (Yi[i]==0):
-            dE = ((n0/(n0+n1))**m)*dE
-        else:
-            dE = ((n1/(n0+n1))**m)*dE
-        print(dE)
-
-
 
 ftra = '03subcl5-600-5-70-bi-5-1tra.prn'
 ftst = '03subcl5-600-5-70-bi-5-1tst.prn'
@@ -98,8 +80,8 @@ R,Ry = getR(Xtra,ytra,25,4)
 print(R[0])
 print(Xtra[0])
 print(np.linalg.norm(Xtra[0]-R[0]))
-#newtra = distmatrices(Xtra,R)
-#newtst = distmatrices(Xtest,R)
+traR = distmatrices(Xtra,R)
+tstR = distmatrices(Xtest,R)
 
 
 #clf = neighbors.KNeighborsClassifier(n_neighbors, weights='uniform', algorithm="brute")
